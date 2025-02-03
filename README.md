@@ -1,5 +1,5 @@
 # pc-media-control
- Control PC Media over LAN and sockets
+Control PC Media over LAN and sockets
 ## Project Structure
 
 ```
@@ -25,4 +25,10 @@ Start the server:
 node server.js
 ```
 
-Visit `http://<your-PC-IP>:3000` or scan the QR code from your phone browser (as shown in the IP display on the page).
+To run the server in the background as a pm2 process:
+
+```bash
+pm2 start server.js
+```
+
+//Visit `http://<your-PC-IP>:3000` or scan the QR code from your phone browser (as shown in the IP display on the page).

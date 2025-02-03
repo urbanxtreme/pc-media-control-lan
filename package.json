@@ -1,0 +1,19 @@
+{
+  "name": "media-wifi-pc",
+  "version": "1.0.0",
+  "description": "Control Your media playing in laptop over web ui and local wifi",
+  "main": "app.js",
+  "scripts": {
+    "test":"app.js --hostname 0.0.0.0 --port 3000"
+  },
+  "keywords": [
+    "theinfinox"
+  ],
+  "author": "theinfinox",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2",
+    "robotjs": "^0.6.0",
+    "socket.io": "^4.8.1"
+  }
+}

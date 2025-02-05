@@ -4,7 +4,7 @@
   "description": "Control Your media playing in laptop over web ui and local wifi",
   "main": "app.js",
   "scripts": {
-    "test":"app.js --hostname 0.0.0.0 --port 3000"
+    "test": "app.js"
   },
   "keywords": [
     "theinfinox"
@@ -15,5 +15,19 @@
     "express": "^4.21.2",
     "robotjs": "^0.6.0",
     "socket.io": "^4.8.1"
-  }
+  },
+  "bin": "./app.js",
+"pkg": {
+  "scripts": "app.js",
+  "assets": [
+    "public/index.html",
+    "node_modules/**",
+    "node_modules/robotjs/build/Release/*.node"
+  ],
+  "outputPath": "exece",
+  "targets": [
+    "node18-win-x64"
+  ]
+}
+
 }

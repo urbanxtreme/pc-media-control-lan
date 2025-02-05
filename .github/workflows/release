@@ -1,0 +1,50 @@
+name: Build and Release EXE
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14'
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Build Executable in x64Build Folder
+      run: |
+        mkdir x64Build
+        npx pkg app.js --config package.json --output x64Build/app.exe
+
+    - name: Create Release Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: x64Build-app-exe
+        path: ./x64Build/app.exe
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: x64Build-app-exe
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: x64Build/app.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

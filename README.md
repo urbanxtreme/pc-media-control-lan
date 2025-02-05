@@ -14,7 +14,7 @@ media-controller/
 Install the required packages:
 
 ```bash
-npm install express socket.io robotjs
+npm install
 ```
 
 ## Usage

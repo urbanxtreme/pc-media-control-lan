@@ -4,7 +4,7 @@ Control PC Media over LAN and sockets
 
 ```
 media-controller/
-├── server.js
+├── app.js
 └── public/
     └── index.html
 ```

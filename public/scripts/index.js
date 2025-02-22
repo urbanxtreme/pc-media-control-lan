@@ -4,6 +4,22 @@ function sendCommand(command) {
   socket.emit("media-control", command);
 }
 
+// Add these event listeners to your existing script
+const volumeSlider = document.getElementById("volumeSlider");
+const brightnessSlider = document.getElementById("brightnessSlider");
+
+// Volume Slider
+volumeSlider.addEventListener("input", (e) => {
+  const volumeValue = e.target.value;
+  socket.emit("media-control", `volume:${volumeValue}`);
+});
+
+// Brightness Slider
+brightnessSlider.addEventListener("input", (e) => {
+  const brightnessValue = e.target.value;
+  socket.emit("media-control", `brightness:${brightnessValue}`);
+});
+
 fetch("/ipinfo")
   .then((response) => response.text())
   .then((ip) => {

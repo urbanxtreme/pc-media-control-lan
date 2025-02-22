@@ -1,10 +1,11 @@
-const express = require('express');
-const path = require('path');
-const http = require('http');
-const socketIo = require('socket.io');
-const robot = require('robotjs');
-const os = require('os');
-const readline = require('readline');
+const express = require("express");
+const path = require("path");
+const http = require("http");
+const socketIo = require("socket.io");
+const robot = require("robotjs");
+const os = require("os");
+const readline = require("readline");
+const { exec } = require("child_process");
 
 const app = express();
 const server = http.createServer(app);
@@ -15,22 +16,20 @@ function getLocalIP() {
   const interfaces = os.networkInterfaces();
   const availableInterfaces = [];
 
-  // Collect IPv4 interfaces
   for (const iface in interfaces) {
     for (const details of interfaces[iface]) {
-      if (details.family === 'IPv4' && !details.internal) {
+      if (details.family === "IPv4" && !details.internal) {
         availableInterfaces.push({ name: iface, address: details.address });
       }
     }
   }
 
   if (availableInterfaces.length === 0) {
-    console.log('No valid network interfaces found.');
-    return 'localhost';
+    console.log("No valid network interfaces found.");
+    return "localhost";
   }
 
-  // Display list for user to choose from
-  console.log('Available Network Interfaces:');
+  console.log("Available Network Interfaces:");
   availableInterfaces.forEach((iface, index) => {
     console.log(`${index + 1}. ${iface.name} - ${iface.address}`);
   });
@@ -40,76 +39,150 @@ function getLocalIP() {
     output: process.stdout,
   });
 
-  // Prompt user to select an interface
-  rl.question('Select an interface by number: ', (input) => {
+  rl.question("Select an interface by number: ", (input) => {
     const choice = parseInt(input, 10) - 1;
     if (choice >= 0 && choice < availableInterfaces.length) {
       const localIP = availableInterfaces[choice].address;
       console.log(`Selected IP: ${localIP}`);
       rl.close();
-      startServer(localIP); // Start server with selected IP
+      startServer(localIP);
     } else {
-      console.log('Invalid choice. Exiting.');
+      console.log("Invalid choice. Exiting.");
       rl.close();
     }
   });
 }
 
-// Start the server
 function startServer(localIP) {
-  // Serve the static files
-  app.use(express.static(path.join(__dirname, 'public')));
+  app.use(express.static(path.join(__dirname, "public")));
 
-  app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
   });
 
-  io.on('connection', (socket) => {
-    console.log('Client connected');
+  io.on("connection", (socket) => {
+    console.log("Client connected");
 
-    socket.on('media-control', (command) => {
+    socket.on("media-control", (command) => {
       console.log(`Received command: ${command}`);
       handleCommand(command);
     });
 
-    socket.on('disconnect', () => {
-      console.log('Client disconnected');
+    socket.on("disconnect", () => {
+      console.log("Client disconnected");
     });
   });
 
   function handleCommand(command) {
-    switch (command) {
-      case 'play':
-      case 'pause':
-        robot.keyTap('audio_play');
-        break;
-      case 'next':
-        robot.keyTap('audio_next');
-        break;
-      case 'previous':
-        robot.keyTap('audio_prev');
-        break;
-      case 'volumeUp':
-        robot.keyTap('audio_vol_up');
-        break;
-      case 'volumeDown':
-        robot.keyTap('audio_vol_down');
-        break;
-      default:
-        console.log(`Unknown command: ${command}`);
+    const platform = os.platform();
+
+    try {
+      switch (command) {
+        // Media Controls
+        case "play":
+        case "pause":
+          robot.keyTap("audio_play");
+          break;
+        case "next":
+          robot.keyTap("audio_next");
+          break;
+        case "previous":
+          robot.keyTap("audio_prev");
+          break;
+        case "stop":
+          robot.keyTap("audio_stop");
+          break;
+        case "mute":
+          robot.keyTap("audio_mute");
+          break;
+        case "volumeUp":
+          robot.keyTap("audio_vol_up");
+          break;
+        case "volumeDown":
+          robot.keyTap("audio_vol_down");
+          break;
+
+        case "brightnessUp":
+          if (platform === "darwin") {
+            // macOS
+            robot.keyTap("brightness_up");
+          } else if (platform === "win32") {
+            // Windows
+            exec(
+              `powershell (Get-WmiObject -Namespace root/WMI -Class WmiMonitorBrightnessMethods).WmiSetBrightness(1, $((Get-WmiObject -Namespace root/WMI -Class WmiMonitorBrightness).CurrentBrightness + 10))`
+            );
+          } else if (platform === "linux") {
+            robot.keyTap("brightness_up");
+          }
+          break;
+
+        case "brightnessDown":
+          if (platform === "darwin") {
+            // macOS
+            robot.keyTap("brightness_down");
+          } else if (platform === "win32") {
+            // Windows
+            exec(
+              `powershell (Get-WmiObject -Namespace root/WMI -Class WmiMonitorBrightnessMethods).WmiSetBrightness(1, $((Get-WmiObject -Namespace root/WMI -Class WmiMonitorBrightness).CurrentBrightness - 10))`
+            );
+          } else if (platform === "linux") {
+            robot.keyTap("brightness_down");
+          }
+          break;
+        case "lock":
+          if (platform === "win32") {
+            exec("rundll32 user32.dll,LockWorkStation");
+          } else if (platform === "darwin") {
+            exec(
+              "/System/Library/CoreServices/Menu\\ Extras/User.menu/Contents/Resources/CGSession -suspend"
+            );
+          } else if (platform === "linux") {
+            exec("gnome-screensaver-command -l");
+          }
+          break;
+        case "shutdown":
+          if (platform === "win32") {
+            exec("shutdown /s /t 0");
+          } else if (platform === "darwin") {
+            exec("osascript -e 'tell app \"System Events\" to shut down'");
+          } else if (platform === "linux") {
+            exec("systemctl poweroff");
+          }
+          break;
+        case "restart":
+          if (platform === "win32") {
+            exec("shutdown /r /t 0");
+          } else if (platform === "darwin") {
+            exec("osascript -e 'tell app \"System Events\" to restart'");
+          } else if (platform === "linux") {
+            exec("systemctl reboot");
+          }
+          break;
+        case "sleep":
+          if (platform === "win32") {
+            exec("rundll32.exe powrprof.dll,SetSuspendState 0,1,0");
+          } else if (platform === "darwin") {
+            exec("pmset sleepnow");
+          } else if (platform === "linux") {
+            exec("systemctl suspend");
+          }
+          break;
+
+        default:
+          console.log(`Unknown command: ${command}`);
+      }
+    } catch (error) {
+      console.error(`Error executing command ${command}:`, error);
     }
   }
 
-  // Endpoint to fetch local IP
-  app.get('/ipinfo', (req, res) => {
+  app.get("/ipinfo", (req, res) => {
     res.send(localIP);
   });
 
-  // Start the server
   server.listen(3000, () => {
     console.log(`Server running at http://${localIP}:3000`);
   });
 }
 
-// Initialize the selection and server start
 getLocalIP();

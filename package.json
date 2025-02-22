@@ -12,22 +12,22 @@
   "author": "theinfinox",
   "license": "ISC",
   "dependencies": {
+    "brightness": "^3.0.0",
     "express": "^4.21.2",
     "robotjs": "^0.6.0",
     "socket.io": "^4.8.1"
   },
   "bin": "./app.js",
-"pkg": {
-  "scripts": "app.js",
-  "assets": [
-    "public/index.html",
-    "node_modules/**",
-    "node_modules/robotjs/build/Release/*.node"
-  ],
-  "outputPath": "exece",
-  "targets": [
-    "node18-win-x64"
-  ]
-}
-
+  "pkg": {
+    "scripts": "app.js",
+    "assets": [
+      "public/index.html",
+      "node_modules/**",
+      "node_modules/robotjs/build/Release/*.node"
+    ],
+    "outputPath": "exece",
+    "targets": [
+      "node18-win-x64"
+    ]
+  }
 }

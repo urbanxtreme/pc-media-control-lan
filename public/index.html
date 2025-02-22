@@ -5,21 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Media Controller</title>
     <link rel="stylesheet" href="styles/index.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   </head>
   <body>
-    <h1>Media Controller</h1>
-    <div id="qrcode"></div>
+    <div class="container">
+      <div class="header">
+        <h1><span class="material-icons">touch_app</span> Media Controller</h1>
+        <p id="ip-info">Fetching server information...</p>
+      </div>
 
-    <p id="ip-info">Fetching server information...</p>
+      <div class="qrcode-container">
+        <div id="qrcode"></div>
+        <p class="qr-caption">Scan to connect mobile</p>
+      </div>
 
-    <button onclick="sendCommand('play')">Play/Pause</button>
-    <button onclick="sendCommand('next')">Next</button>
-    <button onclick="sendCommand('previous')">Previous</button>
+      <div class="controls">
+        <button class="control-btn" onclick="sendCommand('previous')">
+          <span class="material-icons">skip_previous</span>
+          Previous
+        </button>
+        <button class="control-btn play-pause" onclick="sendCommand('play')">
+          <span class="material-icons">play_arrow</span>
+          Play/Pause
+        </button>
+        <button class="control-btn" onclick="sendCommand('next')">
+          <span class="material-icons">skip_next</span>
+          Next
+        </button>
+        <button class="control-btn" onclick="sendCommand('volumeDown')">
+          <i class="fas fa-volume-down"></i>
+        </button>
+        <button class="control-btn" onclick="sendCommand('volumeUp')">
+          <i class="fas fa-volume-up"></i>
+        </button>
+      </div>
+    </div>
 
     <script src="/socket.io/socket.io.js"></script>
-
     <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
-
     <script src="scripts/index.js"></script>
   </body>
 </html>

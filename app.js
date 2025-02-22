@@ -89,6 +89,12 @@ function startServer(localIP) {
       case 'previous':
         robot.keyTap('audio_prev');
         break;
+      case 'volumeUp':
+        robot.keyTap('audio_vol_up');
+        break;
+      case 'volumeDown':
+        robot.keyTap('audio_vol_down');
+        break;
       default:
         console.log(`Unknown command: ${command}`);
     }

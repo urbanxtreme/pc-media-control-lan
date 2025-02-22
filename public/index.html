@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Media Controller</title>
@@ -16,6 +17,10 @@
   </head>
   <body>
     <div class="container">
+      <div class="header">
+        <h1><span class="material-icons">touch_app</span> Media Controller</h1>
+        <p id="ip-info">Fetching server information...</p>
+      </div>
       <div class="header">
         <h1><span class="material-icons">touch_app</span> Media Controller</h1>
         <p id="ip-info">Fetching server information...</p>
@@ -139,7 +144,25 @@
             height: 128,
           });
         });
+      const socket = io();
 
+      // Fetch server IP and generate QR code
+      fetch("/ipinfo")
+        .then((response) => response.text())
+        .then((ip) => {
+          document.getElementById(
+            "ip-info"
+          ).textContent = `Server IP: ${ip}:3000`;
+          new QRCode(document.getElementById("qrcode"), {
+            text: `http://${ip}:3000`,
+            width: 128,
+            height: 128,
+          });
+        });
+
+      function sendCommand(command) {
+        socket.emit("media-control", command);
+      }
       function sendCommand(command) {
         socket.emit("media-control", command);
       }
@@ -149,6 +172,13 @@
           sendCommand(command);
         }
       }
+      function sendCommandWithConfirm(command) {
+        if (confirm(`Are you sure you want to ${command} the system?`)) {
+          sendCommand(command);
+        }
+      }
     </script>
   </body>
+  </body>
 </html>
+

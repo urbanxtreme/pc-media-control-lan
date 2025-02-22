@@ -5,21 +5,257 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Media Controller</title>
     <link rel="stylesheet" href="styles/index.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/awesome/5.15.4/css/all.min.css"
+    />
+    <style>
+      .control-section {
+        margin: 20px 0;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        border: 1px solid #636363;
+        width: 100%;
+        max-width: 600px;
+      }
+
+      .section-title {
+        color: #fff;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .danger {
+        background-color: #796c15 !important;
+        color: #fff !important;
+      }
+
+      .warning {
+        background-color: #796c15 !important;
+        color: #fff !important;
+      }
+
+      /* Unified Slider Styles */
+      .slider-container {
+        width: 100%;
+        max-width: 300px;
+        margin: 20px auto;
+      }
+
+      .slider-wrapper {
+        position: relative;
+        padding: 15px 0;
+      }
+
+      .slider {
+        appearance: none;
+        width: 100%;
+        height: 8px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 4px;
+        outline: none;
+      }
+
+      .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 24px;
+        height: 24px;
+        background: #2196f3;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+
+      .slider::-moz-range-thumb {
+        width: 24px;
+        height: 24px;
+        background: #2196f3;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+
+      .slider-labels {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 12px;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.9em;
+      }
+
+      /* System Controls Grid */
+      .system-controls .controls {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+        gap: 15px;
+        margin-top: 25px;
+        width: 100%;
+        max-width: 400px;
+        justify-content: center;
+      }
+    </style>
   </head>
   <body>
-    <h1>Media Controller</h1>
-    <div id="qrcode"></div>
+    <div class="container">
+      <div class="header">
+        <h1><span class="material-icons">touch_app</span> Media Controller</h1>
+        <p id="ip-info">Fetching server information...</p>
+      </div>
 
-    <p id="ip-info">Fetching server information...</p>
+      <div class="qrcode-container">
+        <div id="qrcode"></div>
+        <p class="qr-caption">Scan to connect mobile</p>
+      </div>
 
-    <button onclick="sendCommand('play')">Play/Pause</button>
-    <button onclick="sendCommand('next')">Next</button>
-    <button onclick="sendCommand('previous')">Previous</button>
+      <!-- Media Controls -->
+      <div class="control-section">
+        <h2 class="section-title">
+          <span class="material-icons">play_circle_filled</span>
+          Media Controls
+        </h2>
+        <div class="control-collection">
+          <div class="controls">
+            <button class="control-btn" onclick="sendCommand('previous')">
+              <span class="material-icons">skip_previous</span>
+            </button>
+            <button
+              class="control-btn play-pause"
+              onclick="sendCommand('play')"
+            >
+              <span class="material-icons">play_arrow</span>
+            </button>
+            <button class="control-btn" onclick="sendCommand('next')">
+              <span class="material-icons">skip_next</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Volume Controls -->
+      <div class="control-section">
+        <h2 class="section-title">
+          <span class="material-icons">volume_up</span>
+          Volume Controls
+        </h2>
+        <div class="control-collection">
+          <div class="slider-container">
+            <div class="slider-wrapper">
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value="50"
+                class="slider"
+                id="volumeSlider"
+              />
+              <div class="slider-labels">
+                <span>0</span>
+                <span>100</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- System Controls -->
+      <div class="control-section system-controls">
+        <h2 class="section-title">
+          <i class="fas fa-cog"></i>
+          System Controls
+        </h2>
+        <div class="control-collection">
+          <div class="slider-container">
+            <div class="slider-wrapper">
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value="50"
+                class="slider"
+                id="brightnessSlider"
+              />
+              <div class="slider-labels">
+                <span>0</span>
+                <span>100</span>
+              </div>
+            </div>
+          </div>
+          <div class="controls">
+            <button
+              class="control-btn warning"
+              onclick="sendCommandWithConfirm('lock')"
+            >
+              <span class="material-icons">lock</span>
+            </button>
+            <button
+              class="control-btn danger"
+              onclick="sendCommandWithConfirm('sleep')"
+            >
+              <span class="material-icons">bedtime</span>
+            </button>
+            <button
+              class="control-btn danger"
+              onclick="sendCommandWithConfirm('restart')"
+            >
+              <span class="material-icons">restart_alt</span>
+            </button>
+            <button
+              class="control-btn danger"
+              onclick="sendCommandWithConfirm('shutdown')"
+            >
+              <span class="material-icons">power_settings_new</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script src="/socket.io/socket.io.js"></script>
-
     <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+    <script>
+      const socket = io();
 
-    <script src="scripts/index.js"></script>
+      // Fetch server IP and generate QR code
+      fetch("/ipinfo")
+        .then((response) => response.text())
+        .then((ip) => {
+          document.getElementById(
+            "ip-info"
+          ).textContent = `Server IP: ${ip}:3000`;
+          new QRCode(document.getElementById("qrcode"), {
+            text: `http://${ip}:3000`,
+            width: 128,
+            height: 128,
+          });
+        });
+
+      function sendCommand(command) {
+        socket.emit("media-control", command);
+      }
+
+      function sendCommandWithConfirm(command) {
+        if (confirm(`Are you sure you want to ${command} the system?`)) {
+          sendCommand(command);
+        }
+      }
+
+      // Slider Controls
+      const volumeSlider = document.getElementById("volumeSlider");
+      const brightnessSlider = document.getElementById("brightnessSlider");
+
+      volumeSlider.addEventListener("input", (e) => {
+        socket.emit("media-control", `volume:${e.target.value}`);
+      });
+
+      brightnessSlider.addEventListener("input", (e) => {
+        socket.emit("media-control", `brightness:${e.target.value}`);
+      });
+    </script>
   </body>
 </html>

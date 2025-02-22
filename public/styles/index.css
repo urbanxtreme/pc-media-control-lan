@@ -141,10 +141,23 @@ body {
   margin: 15px 0;
 }
 
+<<<<<<< HEAD
+=======
+@media (max-width: 480px) {
+  .controls {
+    grid-template-columns: repeat(3,1fr);
+  }
+
+  .control-btn {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+>>>>>>> 62fdaa8a97048925d32998fdf0ce3b7d4bb0972f
 .control-section {
-  margin: 20px;
+  margin: 20px 0;
   padding: 15px;
-  border: 1px solid #444;
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   position: relative;
   width: 100%;
@@ -152,8 +165,8 @@ body {
 }
 
 .section-title {
-  margin-bottom: 15px;
   color: #fff;
+<<<<<<< HEAD
 }
 
 /* Responsive adjustments */
@@ -263,4 +276,16 @@ body {
     width: 18px;
     height: 18px;
   }
+=======
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.danger {
+  background-color: #ff4444 !important;
+}
+.warning {
+  background-color: #ffbb33 !important;
+>>>>>>> 62fdaa8a97048925d32998fdf0ce3b7d4bb0972f
 }

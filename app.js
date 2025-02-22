@@ -7,7 +7,10 @@ const os = require("os");
 const readline = require("readline");
 const { exec } = require("child_process");
 
+const dotenv = require("dotenv");
+dotenv.config();
 const app = express();
+const pwd = process.env.PWD;
 const server = http.createServer(app);
 const io = socketIo(server);
 
@@ -73,9 +76,7 @@ function startServer(localIP) {
     });
   });
 
-  function handleCommand(command) {
-    const platform = os.platform();
-
+  function executeCommand(command, platform) {
     try {
       switch (command) {
         // Media Controls
@@ -176,12 +177,32 @@ function startServer(localIP) {
     }
   }
 
-  app.get("/ipinfo", (req, res) => {
-    res.send(localIP);
+  function handleCommand(cc) {
+    const platform = os.platform();
+    command = cc.command;
+    console.log(cc.command);
+    secure = cc.secure;
+    npwd = cc.pwd;
+    if (secure) {
+      if (pwd === process.env.PWD) {
+        executeCommand(command, platform);
+      } else {
+        console.log("Invalid password");
+      }
+    } else {
+      executeCommand(command, platform);
+    }
+  }
+
+  app.get("/ipinfo/", (req, res) => {
+    res.send({
+      ip: localIP,
+    });
   });
 
   server.listen(3000, () => {
     console.log(`Server running at http://${localIP}:3000`);
+    console.log("Password for the session is: ", process.env.PWD);
   });
 }
 

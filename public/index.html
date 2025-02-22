@@ -1,147 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Media Controller</title>
     <link rel="stylesheet" href="styles/index.css" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/awesome/5.15.4/css/all.min.css">
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/awesome/5.15.4/css/all.min.css"
+    />
     <style>
-        /* Add temporary inline styles for demonstration */
-        .control-section {
-            margin: 20px 0;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
-        .section-title {
-            color: #fff;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .danger {
-            background-color: #ff4444 !important;
-        }
-        .warning {
-            background-color: #ffbb33 !important;
-        }
+      /* Add temporary inline styles for demonstration */
+      .control-section {
+        margin: 20px 0;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    border: 1px solid #636363;
+    justify-content: center;
+    align-items: center;
+      }
+      .section-title {
+        color: #fff;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .danger {
+        background-color: #571111 !important;
+        color: red !important;
+      }
+      .warning {
+        background-color: #796c15 !important;
+        color:yellow !important;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div class="header">
-            <h1><span class="material-icons">touch_app</span> Media Controller</h1>
-            <p id="ip-info">Fetching server information...</p>
-        </div>
+      <div class="header">
+        <h1><span class="material-icons">touch_app</span> Media Controller</h1>
+        <p id="ip-info">Fetching server information...</p>
+      </div>
 
-        <div class="qrcode-container">
-            <div id="qrcode"></div>
-            <p class="qr-caption">Scan to connect mobile</p>
-        </div>
+      <div class="qrcode-container">
+        <div id="qrcode"></div>
+        <p class="qr-caption">Scan to connect mobile</p>
+      </div>
 
-        <div class="control-section">
-            <h2 class="section-title">
-                <span class="material-icons">play_circle_filled</span>
-                Media Controls
-            </h2>
-            <div class="controls">
-                <button class="control-btn" onclick="sendCommand('previous')">
-                    <span class="material-icons">skip_previous</span>
-                    Previous
-                </button>
-                <button class="control-btn play-pause" onclick="sendCommand('play')">
-                    <span class="material-icons">play_arrow</span>
-                    Play/Pause
-                </button>
-                <button class="control-btn" onclick="sendCommand('next')">
-                    <span class="material-icons">skip_next</span>
-                    Next
-                </button>
-            </div>
+      <div class="control-section">
+        <h2 class="section-title">
+          <span class="material-icons">play_circle_filled</span>
+          Media Controls
+        </h2>
+        <div class="control-collection">
+          <div class="controls">
+            <button class="control-btn" onclick="sendCommand('previous')">
+              <span class="material-icons">skip_previous</span>
+            </button>
+            <button
+              class="control-btn play-pause"
+              onclick="sendCommand('play')"
+            >
+              <span class="material-icons">play_arrow</span>
+            </button>
+            <button class="control-btn" onclick="sendCommand('next')">
+              <span class="material-icons">skip_next</span>
+            </button>
+          </div>
         </div>
+      </div>
 
-        <div class="control-section">
-            <h2 class="section-title">
-                <i class="fas fa-volume-up"></i>
-                Volume Controls
-            </h2>
-            <div class="controls">
-                <button class="control-btn" onclick="sendCommand('volumeDown')">
-                    <i class="fas fa-volume-down"></i>
-                    Volume Down
-                </button>
-                <button class="control-btn" onclick="sendCommand('mute')">
-                    <i class="fas fa-volume-mute"></i>
-                    Mute
-                </button>
-                <button class="control-btn" onclick="sendCommand('volumeUp')">
-                    <i class="fas fa-volume-up"></i>
-                    Volume Up
-                </button>
-            </div>
-        </div>
+      <div class="control-section">
+        <h2 class="section-title">
+          <span class="material-icons">volume_up</span>
 
-        <div class="control-section">
-            <h2 class="section-title">
-                <i class="fas fa-cog"></i>
-                System Controls
-            </h2>
-            <div class="controls">
-                <button class="control-btn" onclick="sendCommand('brightnessDown')">
-                    <i class="fas fa-sun"></i> -
-                </button>
-                <button class="control-btn" onclick="sendCommand('brightnessUp')">
-                    <i class="fas fa-sun"></i> +
-                </button>
-                <button class="control-btn warning" onclick="sendCommandWithConfirm('lock')">
-                    <i class="fas fa-lock"></i>
-                    Lock
-                </button>
-                <button class="control-btn danger" onclick="sendCommandWithConfirm('sleep')">
-                    <i class="fas fa-moon"></i>
-                    Sleep
-                </button>
-                <button class="control-btn danger" onclick="sendCommandWithConfirm('restart')">
-                    <i class="fas fa-redo"></i>
-                    Restart
-                </button>
-                <button class="control-btn danger" onclick="sendCommandWithConfirm('shutdown')">
-                    <i class="fas fa-power-off"></i>
-                    Shutdown
-                </button>
-            </div>
+          Volume Controls
+        </h2>
+        <div class="control-collection">
+          <div class="controls">
+            <button class="control-btn" onclick="sendCommand('volumeDown')">
+              <span class="material-icons">volume_down</span>
+            </button>
+            <button class="control-btn" onclick="sendCommand('mute')">
+              <span class="material-icons">volume_off</span>
+            </button>
+            <button class="control-btn" onclick="sendCommand('volumeUp')">
+              <span class="material-icons">volume_up</span>
+            </button>
+          </div>
         </div>
+      </div>
+
+      <div class="control-section">
+        <h2 class="section-title">
+          <i class="fas fa-cog"></i>
+          System Controls
+        </h2>
+        <div class="control-collection">
+        <div class="controls">
+
+          <button class="control-btn" onclick="sendCommand('brightnessDown')">
+            <span class="material-icons"> brightness_low </span>
+          </button>
+          <button class="control-btn" onclick="sendCommand('brightnessUp')">
+            <span class="material-icons">brightness_high</span>
+          </button>
+          <button
+            class="control-btn warning"
+            onclick="sendCommandWithConfirm('lock')"
+          >
+            <span class="material-icons">lock</span>
+          </button>
+          <button
+            class="control-btn danger"
+            onclick="sendCommandWithConfirm('sleep')"
+          >
+            <span class="material-icons">bedtime</span>
+          </button>
+          <button
+            class="control-btn danger"
+            onclick="sendCommandWithConfirm('restart')"
+          >
+            <span class="material-icons">restart_alt</span>
+          </button>
+          <button
+            class="control-btn danger"
+            onclick="sendCommandWithConfirm('shutdown')"
+          >
+            <span class="material-icons">power_settings_new</span>
+          </button>
+        </div>
+        </div>
+      </div>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
     <script>
-        const socket = io();
-        
-        // Fetch server IP and generate QR code
-        fetch('/ipinfo')
-            .then(response => response.text())
-            .then(ip => {
-                document.getElementById('ip-info').textContent = `Server IP: ${ip}:3000`;
-                new QRCode(document.getElementById('qrcode'), {
-                    text: `http://${ip}:3000`,
-                    width: 128,
-                    height: 128
-                });
-            });
+      const socket = io();
 
-        function sendCommand(command) {
-            socket.emit('media-control', command);
-        }
+      // Fetch server IP and generate QR code
+      fetch("/ipinfo")
+        .then((response) => response.text())
+        .then((ip) => {
+          document.getElementById(
+            "ip-info"
+          ).textContent = `Server IP: ${ip}:3000`;
+          new QRCode(document.getElementById("qrcode"), {
+            text: `http://${ip}:3000`,
+            width: 128,
+            height: 128,
+          });
+        });
 
-        function sendCommandWithConfirm(command) {
-            if (confirm(`Are you sure you want to ${command} the system?`)) {
-                sendCommand(command);
-            }
+      function sendCommand(command) {
+        socket.emit("media-control", command);
+      }
+
+      function sendCommandWithConfirm(command) {
+        if (confirm(`Are you sure you want to ${command} the system?`)) {
+          sendCommand(command);
         }
+      }
     </script>
-</body>
+  </body>
 </html>

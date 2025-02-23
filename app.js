@@ -11,8 +11,6 @@ const app = express();
 let pwd = ";"
 const server = http.createServer(app);
 const io = socketIo(server);
-
-const readline = require('node:readline');
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,

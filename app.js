@@ -17,7 +17,7 @@ const rl = readline.createInterface({
 });
 rl.question(`Please set a password for the session ?`, ppd => {
   pwd = ppd;
-  rl.close();
+  
 });
 
 // List of available network interfaces

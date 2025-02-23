@@ -18,7 +18,7 @@ body {
 }
 
 .container {
-  background: linear-gradient(135deg, #660066, #FFFACD);
+  background: rgb(85 85 85 / 10%);
   backdrop-filter: blur(10px);
   border-radius: 20px;
   padding: 30px;
@@ -67,7 +67,7 @@ body {
 }
 
 .control-btn {
-  background: white;
+  background: var(--primary-color);
   border: none;
   padding: 15px 20px;
   border-radius: 12px;

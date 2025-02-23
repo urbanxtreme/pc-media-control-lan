@@ -20,7 +20,19 @@ HVH SyncPlay is a seamless media control and synchronization solution that allow
 - HAVIS V H  
 - ATHUL A S  
 - SREEHARI S  
-- SWAROOP SURESH  
+- SWAROOP SURESH
+
+## Output
+1. ![Screenshot 2025-02-23 123232](https://github.com/user-attachments/assets/32c375b9-ee5f-4f1f-8f55-6e4c5b9eb661)
+1. ![Screenshot 2025-02-23 124235](https://github.com/user-attachments/assets/23fe161a-9bfd-4c43-bb8b-14c5e07c9ba2)
+2. ![Screenshot 2025-02-23 124245](https://github.com/user-attachments/assets/d0ca13eb-9d2d-46fb-acc4-53ce3cc627e4)
+
+## Demo Video
+
+
+https://github.com/user-attachments/assets/694222ce-6862-4e3b-9a45-246e30321952
+
+
 
 ## How It Works? ⚙️  
 The system comprises two Node.js projects:  

@@ -45,10 +45,6 @@ function getLocalIP() {
     console.log(`${index + 1}. ${iface.name} - ${iface.address}`);
   });
 
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
 
   rl.question("Select an interface by number: ", (input) => {
     const choice = parseInt(input, 10) - 1;

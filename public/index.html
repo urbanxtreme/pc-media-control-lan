@@ -14,7 +14,6 @@
       href="https://cdnjs.cloudflare.com/awesome/5.15.4/css/all.min.css"
     />
     <style>
-      /* Add temporary inline styles for demonstration */
       .control-section {
         margin: 20px 0;
         padding: 15px;
@@ -28,6 +27,7 @@
         justify-content: center;
         align-items: center;
       }
+
       .section-title {
         color: #fff;
         margin-bottom: 15px;
@@ -35,13 +35,73 @@
         align-items: center;
         gap: 8px;
       }
+
       .danger {
-        background-color: #571111 !important;
-        color: red !important;
+        background-color: #796c15 !important;
+        color: #fff !important;
       }
+
       .warning {
         background-color: #796c15 !important;
         color: yellow !important;
+      }
+
+      /* Unified Slider Styles */
+      .slider-container {
+        width: 100%;
+        max-width: 300px;
+        margin: 20px auto;
+      }
+
+      .slider-wrapper {
+        position: relative;
+        padding: 15px 0;
+      }
+
+      .slider {
+        appearance: none;
+        width: 100%;
+        height: 8px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 4px;
+        outline: none;
+      }
+
+      .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 24px;
+        height: 24px;
+        background: #2196f3;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+
+      .slider::-moz-range-thumb {
+        width: 24px;
+        height: 24px;
+        background: #2196f3;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+
+      .slider-labels {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 12px;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.9em;
+      }
+
+      /* System Controls Grid */
+      .system-controls .controls {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+        gap: 15px;
+        margin-top: 25px;
+        width: 100%;
+        max-width: 400px;
+        justify-content: center;
       }
     </style>
   </head>
@@ -57,6 +117,7 @@
         <p class="qr-caption">Scan to connect mobile</p>
       </div>
 
+      <!-- Media Controls -->
       <div class="control-section">
         <h2 class="section-title">
           <span class="material-icons">play_circle_filled</span>
@@ -80,28 +141,34 @@
         </div>
       </div>
 
+      <!-- Volume Controls -->
       <div class="control-section">
         <h2 class="section-title">
           <span class="material-icons">volume_up</span>
-
           Volume Controls
         </h2>
         <div class="control-collection">
-          <div class="controls">
-            <button class="control-btn" onclick="sendCommand('volumeDown')">
-              <span class="material-icons">volume_down</span>
-            </button>
-            <button class="control-btn" onclick="sendCommand('mute')">
-              <span class="material-icons">volume_off</span>
-            </button>
-            <button class="control-btn" onclick="sendCommand('volumeUp')">
-              <span class="material-icons">volume_up</span>
-            </button>
+          <div class="slider-container">
+            <div class="slider-wrapper">
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value="50"
+                class="slider"
+                id="volumeSlider"
+              />
+              <div class="slider-labels">
+                <span>0</span>
+                <span>100</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="control-section">
+      <!-- System Controls -->
+      <div class="control-section system-controls">
         <h2 class="section-title">
           <i class="fas fa-cog"></i>
           System Controls
@@ -191,6 +258,18 @@
           }
         }
       }
+
+      // Slider Controls
+      const volumeSlider = document.getElementById("volumeSlider");
+      const brightnessSlider = document.getElementById("brightnessSlider");
+
+      volumeSlider.addEventListener("input", (e) => {
+        socket.emit("media-control", `volume:${e.target.value}`);
+      });
+
+      brightnessSlider.addEventListener("input", (e) => {
+        socket.emit("media-control", `brightness:${e.target.value}`);
+      });
     </script>
   </body>
 </html>

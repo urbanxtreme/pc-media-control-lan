@@ -216,23 +216,6 @@ function startServer(localIP, sessionPassword) {
     }
   }
 
-  function handleCommand(cc) {
-    const platform = os.platform();
-    command = cc.command;
-    console.log(cc.command);
-    secure = cc.secure;
-    npwd = cc.pwd;
-    if (secure) {
-      if (pwd === process.env.PWD) {
-        executeCommand(command, platform);
-      } else {
-        console.log("Invalid password");
-      }
-    } else {
-      executeCommand(command, platform);
-    }
-  }
-
   app.get("/ipinfo/", (req, res) => {
     res.send({
       ip: localIP,

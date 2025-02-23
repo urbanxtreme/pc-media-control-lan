@@ -184,10 +184,11 @@ function startServer(localIP) {
     secure = cc.secure;
     npwd = cc.pwd;
     if (secure) {
-      if (pwd === process.env.PWD) {
+      if (npwd === process.env.PWD) {
         executeCommand(command, platform);
       } else {
         console.log("Invalid password");
+        io.emit("invalid-password", "Invalid password");
       }
     } else {
       executeCommand(command, platform);

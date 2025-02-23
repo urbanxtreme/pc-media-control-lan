@@ -7,12 +7,20 @@ const os = require("os");
 const readline = require("readline");
 const { exec } = require("child_process");
 
-const dotenv = require("dotenv");
-dotenv.config();
 const app = express();
-const pwd = process.env.PWD;
+let pwd = ";"
 const server = http.createServer(app);
 const io = socketIo(server);
+
+const readline = require('node:readline');
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+rl.question(`Please set a password for the session ?`, ppd => {
+  pwd = ppd;
+  rl.close();
+});
 
 // List of available network interfaces
 function getLocalIP() {

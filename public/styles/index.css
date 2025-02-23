@@ -18,7 +18,7 @@ body {
 }
 
 .container {
-  background: linear-gradient(135deg, #3b2372, #808080);
+  background: linear-gradient(135deg, #660066, #FFFACD);
   backdrop-filter: blur(10px);
   border-radius: 20px;
   padding: 30px;
@@ -68,7 +68,7 @@ body {
 }
 
 .control-btn {
-  background: linear-gradient(100deg, #c8bcc6, #2196f3);
+  background: white;
   border: none;
   padding: 15px 20px;
   border-radius: 12px;
@@ -140,9 +140,6 @@ body {
   font-size: 0.95em;
   margin: 15px 0;
 }
-
-<<<<<<< HEAD
-=======
 @media (max-width: 480px) {
   .controls {
     grid-template-columns: repeat(3,1fr);
@@ -153,7 +150,6 @@ body {
     justify-content: center;
   }
 }
->>>>>>> 62fdaa8a97048925d32998fdf0ce3b7d4bb0972f
 .control-section {
   margin: 20px 0;
   padding: 15px;
@@ -166,7 +162,6 @@ body {
 
 .section-title {
   color: #fff;
-<<<<<<< HEAD
 }
 
 /* Responsive adjustments */
@@ -276,16 +271,10 @@ body {
     width: 18px;
     height: 18px;
   }
-=======
-  margin-bottom: 15px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 .danger {
   background-color: #ff4444 !important;
 }
 .warning {
   background-color: #ffbb33 !important;
->>>>>>> 62fdaa8a97048925d32998fdf0ce3b7d4bb0972f
 }

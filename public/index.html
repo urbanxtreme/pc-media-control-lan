@@ -17,11 +17,15 @@
       .control-section {
         margin: 20px 0;
         padding: 15px;
-        background: rgba(255, 255, 255, 0.1);
+        background: linear-gradient(135deg, #cc00cc, #ccffff);
         border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-content: center;
         border: 1px solid #636363;
-        width: 100%;
-        max-width: 600px;
+        justify-content: center;
+        align-items: center;
       }
 
       .section-title {
@@ -39,7 +43,7 @@
 
       .warning {
         background-color: #796c15 !important;
-        color: #fff !important;
+        color: yellow !important;
       }
 
       /* Unified Slider Styles */
@@ -170,23 +174,13 @@
           System Controls
         </h2>
         <div class="control-collection">
-          <div class="slider-container">
-            <div class="slider-wrapper">
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value="50"
-                class="slider"
-                id="brightnessSlider"
-              />
-              <div class="slider-labels">
-                <span>0</span>
-                <span>100</span>
-              </div>
-            </div>
-          </div>
           <div class="controls">
+            <button class="control-btn" onclick="sendCommand('brightnessDown')">
+              <span class="material-icons"> brightness_low </span>
+            </button>
+            <button class="control-btn" onclick="sendCommand('brightnessUp')">
+              <span class="material-icons">brightness_high</span>
+            </button>
             <button
               class="control-btn warning"
               onclick="sendCommandWithConfirm('lock')"
@@ -222,26 +216,46 @@
       const socket = io();
 
       // Fetch server IP and generate QR code
-      fetch("/ipinfo")
-        .then((response) => response.text())
-        .then((ip) => {
-          document.getElementById(
-            "ip-info"
-          ).textContent = `Server IP: ${ip}:3000`;
-          new QRCode(document.getElementById("qrcode"), {
-            text: `http://${ip}:3000`,
-            width: 128,
-            height: 128,
+      function startup() {
+        fetch("/ipinfo/")
+          .then((response) => response.json())
+          .then((ip) => {
+            document.getElementById(
+              "ip-info"
+            ).innerHTML = `Server IP: <a style="color: white" href=" http://${ip.ip}:3000" target="_blank">http://${ip.ip}:3000</a>`;
+            new QRCode(document.getElementById("qrcode"), {
+              text: `http://${ip.ip}:3000`,
+              width: 128,
+              height: 128,
+            });
           });
-        });
-
-      function sendCommand(command) {
-        socket.emit("media-control", command);
       }
 
+      startup();
+      function sendCommand(command) {
+        cc = {
+          command: command,
+          secure: false,
+        };
+        socket.emit("media-control", cc);
+      }
+
+      socket.on("invalid-password", (message) => {
+        alert(message);
+      });
       function sendCommandWithConfirm(command) {
         if (confirm(`Are you sure you want to ${command} the system?`)) {
-          sendCommand(command);
+          pwd = prompt("Enter the password for this session:", "");
+          if (pwd === null || pwd === "") {
+            alert("Please enter a valid password");
+          } else {
+            cc = {
+              command: command,
+              secure: true,
+              pwd: pwd,
+            };
+            socket.emit("media-control", cc);
+          }
         }
       }
 
